@@ -25,7 +25,7 @@ public class Crawler {
 		LinkedList<String> rl = new LinkedList<String>();
 		q.add(new URL(seeds,1));
 		HTMLDownloader d = new HTMLDownloader();
-		int id = 0;
+		int id = 0;//每个页面的ID号
 		while(!q.isEmpty()){
 			URL u = q.remove();
 			String html = d.down(u);
