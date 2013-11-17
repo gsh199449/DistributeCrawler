@@ -29,7 +29,15 @@ import com.gs.extractor.HTMLDownloader;
 import com.gs.extractor.TencentNewsLinkExtractor;
 import com.gs.extractor.URL;
 
+/**
+ * @author gaoshen
+ *	Crawler运行主类，包括Mapper和Main
+ */
 public class Test1 {
+	/**
+	 * @author gaoshen
+	 *	Mapper类
+	 */
 	public static class CrawlMapper extends
 			Mapper<LongWritable, Text, NullWritable, Text> {
 		public void map(LongWritable key, Text value, Context context)
