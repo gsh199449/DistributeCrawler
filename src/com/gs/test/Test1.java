@@ -30,45 +30,44 @@ import com.gs.extractor.TencentNewsLinkExtractor;
 import com.gs.extractor.URL;
 
 public class Test1 {
-
-	public static class TokenizerMapper extends
+	public static class CrawlMapper extends
 			Mapper<LongWritable, Text, NullWritable, Text> {
-
-		private final static IntWritable one = new IntWritable(1);
-		private Text word = new Text();
-
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();
-			Crawler c = new Crawler(key.toString());//以Input文件的行偏移量作为crawler的id
-			System.out.println(key.toString() + "\t" + value.toString());
+			Crawler c = new Crawler(key.toString());// 以Input文件的行偏移量作为crawler的id
+			System.out.println(key.toString() + "\t" + value.toString());// 打印此map获得的连接以及在文件中的偏移量
 			for (String s : c.crawl(value.toString())) {
-				if (s == null || s.equals(""))
+				if (s == null || s.equals(""))// 如果内容为空，则不向context中写入
 					continue;
-				r += s;
-				r += "\r";
+				r += s;// 向context中写入Json
+				r += "\r";// 换行
 			}
-			System.out.println(r);
-			word.set(r);
-			context.write(NullWritable.get(), word);
+			System.out.println(r);// 打印此map函数抓取的json内容
+			context.write(NullWritable.get(), new Text(r));
 		}
 	}
+	private static String dst = "hdfs://gs-pc:9000/home/test/qq.txt";
+	private static String localSrc = "/home/gaoshen/qq.txt";
+
+	private static String outputPath = "hdfs://gs-pc:9000/home/test/output";
 
 	public static void main(String[] args) throws Exception {
 		try {
 			TencentNewsLinkExtractor le = new TencentNewsLinkExtractor();
 			String data = new String();
-			for(URL u : le.extractFromHtml(new HTMLDownloader().down(new URL("http://news.qq.com",1)), 1)){
-				data += (u.url+"\n");
+			for (URL u : le
+					.extractFromHtml(new HTMLDownloader().down(new URL(
+							"http://news.qq.com", 1)), 1)) {
+				data += (u.url + "\n");
 			}
-			FileUtils.writeStringToFile(new File("/home/gaoshen/qq.txt"), data);
+			FileUtils.writeStringToFile(new File(localSrc), data);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// 先写到本地，然后再向hdfs写入。//TODO 拖裤子放屁
 		Configuration conf = new Configuration();
 
-		String localSrc = "/home/gaoshen/qq.txt";
-		String dst = "hdfs://gs-pc:9000/home/test/qq.txt";
 		InputStream in = new BufferedInputStream(new FileInputStream(localSrc));
 		FileSystem fs = FileSystem.get(URI.create(dst), conf);
 		OutputStream out = fs.create(new Path(dst), new Progressable() {
@@ -76,22 +75,17 @@ public class Test1 {
 				System.out.print(".");
 			}
 		});
-		IOUtils.copyBytes(in, out, 4096, true);
+		IOUtils.copyBytes(in, out, 4096, true);// 4096为buffersize
+		// 以上内容为抽取news.qq.com首页的内容，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
 
-//		String[] otherArgs = new GenericOptionsParser(conf, args)
-//				.getRemainingArgs();
-//		if (otherArgs.length != 2) {
-//			System.err.println("Usage: DsCrawler <in> <out>");
-//			System.exit(2);
-//		}
-		Job job = new Job(conf, "DsCrawler");
+		Job job = new Job(conf, "DistributeCrawler");
 
 		job.setJarByClass(Test1.class);
-		job.setMapperClass(TokenizerMapper.class);
+		job.setMapperClass(CrawlMapper.class);
 		job.setOutputKeyClass(NullWritable.class);
 		job.setOutputValueClass(Text.class);
 		FileInputFormat.addInputPath(job, new Path(dst));
-		FileOutputFormat.setOutputPath(job, new Path("hdfs://gs-pc:9000/home/test/output"));
+		FileOutputFormat.setOutputPath(job, new Path(outputPath));
 		job.submit();
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}

@@ -19,7 +19,7 @@ public class Crawler {
 		q.add(u);
 	}
 	public List<String> crawl(String seeds){
-		TencentNewsLinkExtractor le = new TencentNewsLinkExtractor(this,2,30);
+		TencentNewsLinkExtractor le = new TencentNewsLinkExtractor(this,2,50);
 		TencentNewsContentExtractor ce = new TencentNewsContentExtractor();
 		TecentNewsTitleExtrator te = new TecentNewsTitleExtrator();
 		LinkedList<String> rl = new LinkedList<String>();
