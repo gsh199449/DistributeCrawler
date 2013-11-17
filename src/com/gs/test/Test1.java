@@ -13,7 +13,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -21,7 +20,6 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.util.GenericOptionsParser;
 import org.apache.hadoop.util.Progressable;
 
 import com.gs.crawler.Crawler;
@@ -32,6 +30,7 @@ import com.gs.extractor.URL;
 /**
  * @author gaoshen
  *	Crawler运行主类，包括Mapper和Main
+ *	我们认为url.txt中的连接为0深度，所设置的deepth为页面level。
  */
 public class Test1 {
 	/**
@@ -43,7 +42,7 @@ public class Test1 {
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();
-			Crawler c = new Crawler(key.toString());// 以Input文件的行偏移量作为crawler的id
+			Crawler c = new Crawler(key.toString(),2,50);// 以Input文件的行偏移量作为crawler的id
 			System.out.println(key.toString() + "\t" + value.toString());// 打印此map获得的连接以及在文件中的偏移量
 			for (String s : c.crawl(value.toString())) {
 				if (s == null || s.equals(""))// 如果内容为空，则不向context中写入
