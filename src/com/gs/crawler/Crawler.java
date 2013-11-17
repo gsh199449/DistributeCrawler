@@ -52,7 +52,7 @@ public class Crawler {
 	 * @return 返回抓取的储存json的LinkedList
 	 */
 	public List<String> crawl(String seeds) {
-		TencentNewsLinkExtractor le = new TencentNewsLinkExtractor(this, deepth-1, topN);
+		TencentNewsLinkExtractor le = new TencentNewsLinkExtractor(deepth-1, topN);
 		TencentNewsContentExtractor ce = new TencentNewsContentExtractor();
 		TecentNewsTitleExtrator te = new TecentNewsTitleExtrator();
 		HTMLDownloader downloader = new HTMLDownloader();
@@ -61,15 +61,18 @@ public class Crawler {
 		queue.add(new URL(seeds, 1));//将种子装入带抓取的队列
 		int id = 0;// 每个页面的子ID号.
 		while (!queue.isEmpty()) {
+			Redis r = Redis.getInstance();//Redis为单例模式
 			URL u = queue.remove();//从队列里面拿出一个URL
+			if(r.hasFetched(u)){
+				continue;
+			}
+			r.add(u);//向Redis里添加URL
 			String html = downloader.down(u);//下载html
 			if (html == null || html.equals(""))//判断html是否为空
 				continue;
-			Redis r = Redis.getInstance();//Redis为单例模式
 			for (URL url : le.extractFromHtml(html, u.level)) {//提取本页面的连接
 				if (r.hasFetched(url))//通过Redis判断是否已经抓取
 					continue;//若已经抓取则不再向待抓取队列中添加
-				r.add(url);//添加到Redis数据库中
 				addURL(url);//添加到Crawler的队列中
 			}
 			String content = ce.extractFromHtml(html);//抽取本页面的内容

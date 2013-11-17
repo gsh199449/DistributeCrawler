@@ -20,17 +20,18 @@ public class TencentNewsLinkExtractor implements LinkExtractor {
 	private int deepth;
 	private int topN;
 
-	public TencentNewsLinkExtractor(Crawler c, int deepth, int topN) {
+	public TencentNewsLinkExtractor(int deepth, int topN) {
 		this.topN = topN;
 		this.deepth = deepth;
 	}
 
 	public TencentNewsLinkExtractor() {}
 
-	public LinkedList<URL> extractFromHtml(String html, int level) {
+	public LinkedList<URL> extractFromHtml(String html, final int level) {
 		LinkedList<URL> s = new LinkedList<URL>();
-		if (level >= deepth && deepth != 0)
+		if (level >= deepth && deepth != 0){
 			return s;// 若已经超过抓取深度则不再提取
+		}
 		String regex = "<a\\s.*?href=\"([^\"]+)\"[^>]*>(.*?)</a>";
 		Pattern pt = Pattern.compile(regex);
 		Matcher mt = pt.matcher(html);
