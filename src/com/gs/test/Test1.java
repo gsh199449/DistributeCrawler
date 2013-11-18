@@ -42,16 +42,17 @@ public class Test1 {
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();
-			Crawler c = new Crawler(key.toString(),2,50);// 以Input文件的行偏移量作为crawler的id
+			Crawler c = new Crawler(key.toString(),30,5);// 以Input文件的行偏移量作为crawler的id
 			System.out.println(key.toString() + "\t" + value.toString());// 打印此map获得的连接以及在文件中的偏移量
 			for (String s : c.crawl(value.toString())) {
 				if (s == null || s.equals(""))// 如果内容为空，则不向context中写入
 					continue;
 				r += s;// 向context中写入Json
-				r += "\r";// 换行
 			}
 			System.out.println(r);// 打印此map函数抓取的json内容
-			context.write(NullWritable.get(), new Text(r));
+			if (!r.equals("")) {
+				context.write(NullWritable.get(), new Text(r));
+			}
 		}
 	}
 	private static String dst = "hdfs://gs-pc:9000/home/test/qq.txt";
@@ -83,7 +84,7 @@ public class Test1 {
 			}
 		});
 		IOUtils.copyBytes(in, out, 4096, true);// 4096为buffersize
-		// 以上内容为抽取news.qq.com首页的内容，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
+		// 以上内容为抽取news.qq.com首页的链接，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
 
 		Job job = new Job(conf, "DistributeCrawler");
 
