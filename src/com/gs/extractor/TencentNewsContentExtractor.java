@@ -17,22 +17,32 @@ public class TencentNewsContentExtractor implements ContentExtractor {
 	 * @return
 	 */
 	public String extractFromHtml(String html) {
-		String re = "";
+		String re = new String();
 		if (html == null) {
 			return re;
 		}
-		String regex = "<div id=\"Cnt-Main-Article-QQ\".*?>(.*?)</div>";
-		Pattern pt = Pattern.compile(regex);
-		Matcher mt = pt.matcher(html);
+		String regex = "<div id=\"Cnt-Main-Article-QQ\".*?>(.*?)</P>.?</div>";//正文最后是</p>换行</div>或者</P></div>为结束标志的
+		Pattern pt = Pattern.compile(regex,Pattern.DOTALL);
+		Matcher mt = pt.matcher(html);//s为网页的html内容
 		if (mt.find()) {
-			re = (mt.group(1).replaceAll("[a-zA-Z_/\"<>=.:]", ""));
+			re = mt.group(1);
 		}
+		Pattern pt1 = Pattern.compile("<script>.*?</script>",Pattern.DOTALL);
+		Matcher mt1 = pt1.matcher(re);
+		re = mt1.replaceAll("");
+		Pattern pt2 = Pattern.compile("<style>.*?</style>",Pattern.DOTALL);
+		Matcher mt2 = pt2.matcher(re);
+		re = mt2.replaceAll("");
+/*		Pattern pt3 = Pattern.compile("<!--[if !IE]>.*?<![endif]-->",Pattern.DOTALL);
+		Matcher mt3 = pt3.matcher(re);
+		re = mt3.replaceAll("");*///FIXME 这个标签不知道为什么抹不掉
+		re = re.replaceAll("<.*?>", "");//抹掉所有尖括号的内容
+		re = re.replaceAll("\\s", "");//抹掉所有空白
 		return re;
 	}
 
 	@Override
 	public String extract(String url) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
