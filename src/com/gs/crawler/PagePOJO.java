@@ -18,12 +18,6 @@ public class PagePOJO {
 	public String title;
 	public String content;
 	
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	public PagePOJO() {
 
 	}
@@ -107,6 +101,16 @@ public class PagePOJO {
 	public String toJson() {
 		Gson gson = new Gson();
 		return gson.toJson(this);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "PagePOJO [" + (url != null ? "url=" + url + ", " : "") + "id="
+				+ id + ", " + (title != null ? "title=" + title + ", " : "")
+				+ (content != null ? "content=" + content : "") + "]";
 	}
 
 	
