@@ -9,7 +9,7 @@ public class TecentNewsTitleExtrator {
 		if(html == null){
 			return re ;
 		}
-		String regex = "<title>(.*?)</title>";
+		String regex = "<title>(.+?)_新闻_腾讯网</title>";//去掉最后的尾坠
 		Pattern pt = Pattern.compile(regex);
 		Matcher mt = pt.matcher(html);
 		if (mt.find()) {
