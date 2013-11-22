@@ -11,8 +11,6 @@ import java.nio.CharBuffer;
 
 import org.apache.log4j.Logger;
 
-import com.google.common.io.LineReader;
-
 
 /**
  * @author GaoShen
