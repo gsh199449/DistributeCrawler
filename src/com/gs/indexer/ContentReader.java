@@ -8,8 +8,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.CharBuffer;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+
+import com.google.gson.Gson;
+import com.gs.crawler.PagePOJO;
 
 
 /**
@@ -19,27 +25,14 @@ import org.apache.log4j.Logger;
 public class ContentReader {
 	private Logger logger = Logger.getLogger(this.getClass());
 
-	public String read(String path, long startoffset, long endoffset) {
-		String content = null;
-		File file = new File(path);
-		try {
-			FileInputStream fis = new FileInputStream(file);
-			fis.skip(startoffset);
-			byte b;
-			int size = (int) (endoffset - startoffset);
-			byte[] b1 = new byte[size + 999];// In order to avoid stackoverflow
-			for (int i = 0; (b = (byte) fis.read()) != -1 && i < size; i++) {
-				b1[i] = b;
-			}
-			content = new String(b1);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.error(e.getMessage());
+	public List<PagePOJO> read(String path) throws IOException {
+		LinkedList<String> list = (LinkedList<String>) FileUtils.readLines(new File(path));
+		Gson g = new Gson();
+		LinkedList<PagePOJO> re = new LinkedList<PagePOJO>();
+		while (!list.isEmpty()) {
+			re.add(g.fromJson(list.remove(), PagePOJO.class));
 		}
-		return content;
+		return re;
 	}
 
 }
