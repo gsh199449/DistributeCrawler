@@ -19,9 +19,13 @@ public class TestContentReader {
 
 	@Test
 	public void test() throws IOException {
-		ContentReader cr = new ContentReader(new FileInputStream(new File("D://Test//testByte.txt")));
+		ContentReader cr = new ContentReader(new FileInputStream(new File("D://Test//20131116")));
+		int i=0;
 		while (cr.hasNext()) {
 			System.out.println(cr.next());
+			if(i<10){
+				i++;
+			}else break;
 		}
 		System.out.println(ContentReader.read(new FileInputStream(new File("D://Test//testByte.txt")), 0));
 		
