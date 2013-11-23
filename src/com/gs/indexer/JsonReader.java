@@ -110,8 +110,8 @@ public class JsonReader {
           String json = null;
           int i = 0;
           try {
-                  char[] b1 = new char[99999];// Buffer
-                  char b = 0;
+                  byte[] b1 = new byte[99999];// Buffer
+                  byte b = 0;
                   if (flag == 0) {//补上因为判断文件是否到头而错过的｛
                           b1[0] = '{';
                           i=1;
@@ -119,11 +119,11 @@ public class JsonReader {
                           i=0;
                   }
                   for (; b != '}'; i++) {
-                          b = (char) fis.read();
+                          b = (byte) fis.read();
                           if(b == '\n') {i = i-1;continue;} //第二次开始每次都有一个换行符，丢弃。
                           b1[i] = b;
                   }
-                  char[] b2 = new char[i];
+                  byte[] b2 = new byte[i];
                   int j = 0;
                   for (j = 0; j < i; j++) {
                           b2[j] = b1[j];// 抹掉b1后边的0
