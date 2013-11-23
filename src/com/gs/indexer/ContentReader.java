@@ -109,7 +109,7 @@ public class ContentReader {
 	}
 
 	public boolean hasNext() throws IOException {
-		if (fis.read() == -1)
+		if (fis.read() == -1)//等待回滚
 			return false;
 		else{
 			return true;
