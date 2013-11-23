@@ -18,9 +18,12 @@ import com.gs.indexer.Hit;
 public class TestContentReader {
 
 	@Test
-	public void test() throws FileNotFoundException {
+	public void test() throws IOException {
 		ContentReader cr = new ContentReader(new FileInputStream(new File("D://Test//testByte.txt")));
-		cr.next();
+		while (cr.hasNext()) {
+			System.out.println(cr.next());
+		}
+		System.out.println(ContentReader.read(new FileInputStream(new File("D://Test//testByte.txt")), 0));
 		
 	}
 	

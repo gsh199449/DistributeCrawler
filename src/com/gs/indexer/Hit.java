@@ -38,6 +38,15 @@ public class Hit {
 	/**
 	 * @return the endOffset
 	 */
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Hit ["
+				+ (pagePOJO != null ? "pagePOJO=" + pagePOJO + ", " : "")
+				+ "startOffset=" + startOffset + "]";
+	}
 	
 	
 }
