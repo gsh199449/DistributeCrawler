@@ -57,8 +57,10 @@ public class Indexer {
 							Field.Store.YES, Field.Index.NOT_ANALYZED));
 					writer.addDocument(doc);
 				}
+				jr.close();
 			}
 			writer.close();
+			
 		} catch (CorruptIndexException e) {
 			e.printStackTrace();
 			logger.error(e.getMessage());
