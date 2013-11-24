@@ -118,7 +118,7 @@ public class JsonReader {
                   }else{
                           i=0;
                   }
-                  for (; b != '}'; i++) {
+                  for (; b != '}'&& b != -1; i++) {
                           b = (byte) fis.read();
                           if(b == '\n') {i = i-1;continue;} //第二次开始每次都有一个换行符，丢弃。
                           b1[i] = b;
