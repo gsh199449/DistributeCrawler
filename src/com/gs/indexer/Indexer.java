@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.NumericField;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -44,14 +45,18 @@ public class Indexer {
 			Document doc;
 			for (File file : f.listFiles()) {
 				logger.info("Indexing   " + file.getName());
-				doc = new Document();
-				doc.add(new Field("content", new FileUtils().readFileToString(
-						file, encoding), Field.Store.NO, Field.Index.ANALYZED));
-				doc.add(new Field("offset", file.getAbsolutePath(),
-						Field.Store.YES, Field.Index.NOT_ANALYZED));
-				doc.add(new Field("filename", file.getName(), Field.Store.YES,
-						Field.Index.NOT_ANALYZED));
-				writer.addDocument(doc);
+				JsonReader jr = new JsonReader(file);
+				while (jr.hasNext()) {
+					doc = new Document();
+					Hit hit = jr.next();
+					if(hit == null) continue;
+					doc.add(new Field("content", hit.getPagePOJO().getContent(), Field.Store.NO,
+							Field.Index.ANALYZED));
+					doc.add(new NumericField("startOffset", Field.Store.YES, false).setLongValue(hit.getStartOffset()));
+					doc.add(new Field("filename", hit.getFileName(),
+							Field.Store.YES, Field.Index.NOT_ANALYZED));
+					writer.addDocument(doc);
+				}
 			}
 			writer.close();
 		} catch (CorruptIndexException e) {
@@ -63,8 +68,8 @@ public class Indexer {
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 	}
-
 }

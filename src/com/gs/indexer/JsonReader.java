@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.gs.crawler.PagePOJO;
 
 
@@ -27,6 +28,7 @@ import com.gs.crawler.PagePOJO;
 public class JsonReader {
 	private FileInputStream fis;
 	private long flag = 0;
+	private File file;
 	/**
 	 * 用commons IO包里面的ReadLines方法实现，当问价过大的时候内存会溢出。
 	 * 将这个文件里的所有json格式的内容制成PagePOJO格式，然后封装在LinkedList中返回。 
@@ -98,6 +100,7 @@ public class JsonReader {
 	 */
 	public JsonReader(final File file) throws FileNotFoundException{
 		this.fis = new FileInputStream(file);
+		this.file = file;
 	}
 	/**
 	 * 读取下一个Json，前提是已经初始化了FileinputStream
@@ -129,18 +132,27 @@ public class JsonReader {
                           b2[j] = b1[j];// 抹掉b1后边的0
                   }
                   json = new String(b2);
+                  System.out.println(json);
           } catch (FileNotFoundException e) {
                   e.printStackTrace();
           } catch (IOException e) {
                   e.printStackTrace();
           }
           Gson gson = new Gson();
-          PagePOJO pojo = gson.fromJson(json, PagePOJO.class);
+          PagePOJO pojo;
+		try {
+			pojo = gson.fromJson(json, PagePOJO.class);
+		} catch (JsonSyntaxException e) {
+			flag = flag + i;
+			e.printStackTrace();
+			return null;
+		}
           hit.setPagePOJO(pojo);
           if (flag != 0)
                   hit.setStartOffset(flag + 1);
           else
                   hit.setStartOffset(flag);// 第一行的起始偏移量是0
+          hit.setFileName(this.file.getName());
           flag = flag + i;
           return hit;
 	}
