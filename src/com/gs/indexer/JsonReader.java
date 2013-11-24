@@ -3,6 +3,7 @@
  */
 package com.gs.indexer;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,7 +26,7 @@ import com.gs.crawler.PagePOJO;
  * @author GaoShen
  * @packageName com.gs.io
  */
-public class JsonReader {
+public class JsonReader implements Closeable{
 	private FileInputStream fis;
 	private long flag = 0;
 	private File file;
