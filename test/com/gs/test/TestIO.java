@@ -9,6 +9,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import com.gs.indexer.JsonReader;
+
 public class TestIO {
 
 	@Test
@@ -34,9 +36,16 @@ public class TestIO {
 	}
 	
 	@Test
-	public void testByte(){
-		byte b = '}';
-		System.out.println(b);
+	public void testByte() throws Exception{
+		JsonReader jr = new JsonReader(new File("D://Test//20131116"));
+		int i=0;
+		while(jr.hasNext()){
+			long s = jr.next().getStartOffset();
+			System.out.println(jr.read(new File("D://Test//20131116"), s));
+			i++;
+			if(i > 10)break;
+		}
+		jr.close();
 	}
 
 }
