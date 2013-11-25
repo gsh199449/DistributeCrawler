@@ -63,6 +63,9 @@ public class JsonReader implements Closeable{
 			byte[] b1 = new byte[99999];// Buffer
 			byte b;
 			int i=0;
+			while(fis.read() != '{'){
+				
+			}
 			for (i = 0; (b = (byte) fis.read()) != -1 && b != '}'; i++) {
 				//if(i==0 && b != '{'){i = i -1;continue;}
 				b1[i] = b;
@@ -72,7 +75,7 @@ public class JsonReader implements Closeable{
              for (j = 0; j < i; j++) {
                      b2[j] = b1[j];// 抹掉b1后边的0
              }
-			json = new String(b2)+'}';
+			json = '{'+new String(b2)+'}';
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
