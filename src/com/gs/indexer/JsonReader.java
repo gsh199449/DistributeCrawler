@@ -62,10 +62,17 @@ public class JsonReader implements Closeable{
 			fis.skip(startoffset);
 			byte[] b1 = new byte[99999];// Buffer
 			byte b;
-			for (int i = 0; (b = (byte) fis.read()) != -1 && b != '}'; i++) {
+			int i=0;
+			for (i = 0; (b = (byte) fis.read()) != -1 && b != '}'; i++) {
+				//if(i==0 && b != '{'){i = i -1;continue;}
 				b1[i] = b;
 			}
-			json = new String(b1)+'}';
+			 byte[] b2 = new byte[i];
+             int j = 0;
+             for (j = 0; j < i; j++) {
+                     b2[j] = b1[j];// 抹掉b1后边的0
+             }
+			json = new String(b2)+'}';
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -73,7 +80,12 @@ public class JsonReader implements Closeable{
 		}
 		Gson gson = new Gson();
 		fis.close();
-		return gson.fromJson(json, PagePOJO.class);
+		try {
+			return gson.fromJson(json, PagePOJO.class);
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/**
@@ -133,7 +145,6 @@ public class JsonReader implements Closeable{
                           b2[j] = b1[j];// 抹掉b1后边的0
                   }
                   json = new String(b2);
-                  System.out.println(json);
           } catch (FileNotFoundException e) {
                   e.printStackTrace();
           } catch (IOException e) {
