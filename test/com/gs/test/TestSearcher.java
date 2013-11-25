@@ -19,7 +19,7 @@ public class TestSearcher {
 		Searcher s = new Searcher("D://Test//json");
 		LinkedList<Hit> list = s.search("的");
 		for(Hit h : list){
-			System.out.println(h);
+			System.out.println(h.getPagePOJO().title);
 			//FileUtils.writeStringToFile(new File("D://Test//result.txt"), h.toString());
 		}
 	}

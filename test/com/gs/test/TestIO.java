@@ -47,5 +47,12 @@ public class TestIO {
 		}
 		jr.close();
 	}
+	
+	@Test
+	public void test1() throws IOException{
+		JsonReader jr = new JsonReader(new File("D://Test//20131116"));
+		System.out.println(jr.read(new File("D://Test//20131116"), 0));
+		
+	}
 
 }
