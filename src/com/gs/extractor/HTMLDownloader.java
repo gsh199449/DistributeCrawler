@@ -6,9 +6,10 @@ import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.log4j.Logger;
 
 public class HTMLDownloader {
-	
+	private Logger logger = Logger.getLogger(this.getClass());
 	public String down(URL u){
 		String s = null;
 		HttpClient hc = new HttpClient();

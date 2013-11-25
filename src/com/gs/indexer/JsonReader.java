@@ -27,6 +27,7 @@ import com.gs.crawler.PagePOJO;
  * @packageName com.gs.io
  */
 public class JsonReader implements Closeable{
+	private Logger logger = Logger.getLogger(this.getClass());
 	private FileInputStream fis;
 	private long flag = 0;
 	private File file;

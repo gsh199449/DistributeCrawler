@@ -21,6 +21,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Progressable;
+import org.apache.log4j.Logger;
 
 import com.gs.crawler.Crawler;
 import com.gs.extractor.HTMLDownloader;
@@ -39,6 +40,7 @@ public class Test1 {
 	 */
 	public static class CrawlMapper extends
 			Mapper<LongWritable, Text, NullWritable, Text> {
+		private Logger logger = Logger.getLogger(this.getClass());
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();

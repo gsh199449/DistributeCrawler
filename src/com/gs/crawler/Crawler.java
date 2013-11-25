@@ -3,6 +3,8 @@ package com.gs.crawler;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.gs.extractor.HTMLDownloader;
 import com.gs.extractor.TecentNewsTitleExtrator;
 import com.gs.extractor.TencentNewsContentExtractor;
@@ -14,7 +16,7 @@ import com.gs.extractor.URL;
  * 
  */
 public class Crawler {
-	
+	private Logger logger = Logger.getLogger(this.getClass());
 	private int deepth;
 	
 	/**

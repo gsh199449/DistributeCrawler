@@ -30,7 +30,6 @@ public class Searcher {
 	private String indexField = "D:\\Test\\index";
 	private List<Hit> list;
 	private String docDirectory;
-
 	/**
 	 * @param indexField
 	 *            the indexfile
