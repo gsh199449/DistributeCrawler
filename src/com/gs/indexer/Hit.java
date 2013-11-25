@@ -3,14 +3,16 @@ package com.gs.indexer;
 import com.gs.crawler.PagePOJO;
 
 public class Hit {
-        public Hit(PagePOJO pagePOJO, long startOffset) {
+        public Hit(PagePOJO pagePOJO, long startOffset,String filename) {
                 this.pagePOJO = pagePOJO;
                 this.startOffset = startOffset;
+                this.fileName = filename;
         }
         public Hit() {
         }
         private PagePOJO pagePOJO;
         private long startOffset;
+        private String fileName;
         /**
          * @return the pagePOJO
          */
@@ -36,6 +38,18 @@ public class Hit {
                 this.startOffset = startOffset;
         }
         /**
+		 * @return the fileName
+		 */
+		public String getFileName() {
+			return fileName;
+		}
+		/**
+		 * @param fileName the fileName to set
+		 */
+		public void setFileName(String fileName) {
+			this.fileName = fileName;
+		}
+		/**
          * @return the endOffset
          */
         /* (non-Javadoc)
