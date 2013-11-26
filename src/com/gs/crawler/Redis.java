@@ -11,7 +11,11 @@ public class Redis {
 	private static Jedis jj;
 
 	private Redis() {
-		jj = new Jedis("localhost");
+		try {
+			jj = new Jedis("localhost");
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
 	}
 
 	private final static Redis INSTANCE = new Redis();

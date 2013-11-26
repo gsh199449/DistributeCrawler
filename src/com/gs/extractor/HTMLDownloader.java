@@ -21,11 +21,11 @@ public class HTMLDownloader {
 			s = get.getResponseBodyAsString();
 			get.releaseConnection();
 		} catch (ConnectTimeoutException e) {
-			e.printStackTrace();
+			logger.warn(u.level+"连接超时");
 		} catch (HttpException e) {
-			e.printStackTrace();
+			logger.warn(u.url+"Http错误");
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("IO错误");
 		}
 		if(s == null || s.equals("")){
 			return s;
