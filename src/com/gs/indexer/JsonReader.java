@@ -27,6 +27,7 @@ import com.gs.crawler.PagePOJO;
  * @packageName com.gs.io
  */
 public class JsonReader implements Closeable{
+	private static Logger logger = Logger.getLogger(JsonReader.class);
 	private FileInputStream fis;
 	private long flag = 0;
 	private File file;
@@ -38,7 +39,12 @@ public class JsonReader implements Closeable{
 	 * @throws IOException
 	 */
 	public static LinkedList<PagePOJO> readFileToPOJOs(String path) throws IOException {
-		List<String> list = FileUtils.readLines(new File(path));
+		List<String> list = null;
+		try {
+			list = FileUtils.readLines(new File(path));
+		} catch (OutOfMemoryError e) {
+			logger.fatal(e.getMessage());
+		}
 		Gson g = new Gson();
 		LinkedList<PagePOJO> re = new LinkedList<PagePOJO>();
 		Iterator<String> it = list.iterator();
@@ -62,18 +68,31 @@ public class JsonReader implements Closeable{
 			fis.skip(startoffset);
 			byte[] b1 = new byte[99999];// Buffer
 			byte b;
-			for (int i = 0; (b = (byte) fis.read()) != -1 && b != '}'; i++) {
+			int i=0;
+			while(fis.read() != '{'){
+				
+			}
+			for (i = 0; (b = (byte) fis.read()) != -1 && b != '}'; i++) {
+				//if(i==0 && b != '{'){i = i -1;continue;}
 				b1[i] = b;
 			}
-			json = new String(b1)+'}';
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			 byte[] b2 = new byte[i];
+             int j = 0;
+             for (j = 0; j < i; j++) {
+                     b2[j] = b1[j];// 抹掉b1后边的0
+             }
+			json = '{'+new String(b2)+'}';
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		Gson gson = new Gson();
 		fis.close();
-		return gson.fromJson(json, PagePOJO.class);
+		try {
+			return gson.fromJson(json, PagePOJO.class);
+		} catch (JsonSyntaxException e) {
+			logger.warn(json+"格式错误");
+			return null;
+		}
 	}
 	
 	/**
@@ -82,16 +101,26 @@ public class JsonReader implements Closeable{
 	 * @return
 	 * @throws IOException 
 	 */
-	public static PagePOJO read(FileInputStream fis) throws IOException {
+	public static PagePOJO read(FileInputStream fis){
 		String json = null;
 		byte[] b1 = new byte[99999];// Buffer
 		byte b;
-		for (int i = 0; (b = (byte) fis.read()) != -1 && b != '}'; i++) {
-			b1[i] = b;
+		try {
+			for (int i = 0; (b = (byte) fis.read()) != -1 && b != '}'; i++) {
+				b1[i] = b;
+			}
+		} catch (IOException e) {
+			logger.error(e.getMessage());
 		}
 		json = new String(b1)+'}';
 		Gson gson = new Gson();
-		return gson.fromJson(json, PagePOJO.class);
+		PagePOJO result = null;
+		try {
+			result = gson.fromJson(json, PagePOJO.class);
+		} catch (JsonSyntaxException e) {
+			logger.warn(json+"格式错误");
+		}
+		return result;
 	}
 	
 	/**
@@ -133,11 +162,8 @@ public class JsonReader implements Closeable{
                           b2[j] = b1[j];// 抹掉b1后边的0
                   }
                   json = new String(b2);
-                  System.out.println(json);
-          } catch (FileNotFoundException e) {
-                  e.printStackTrace();
           } catch (IOException e) {
-                  e.printStackTrace();
+        	  logger.error(e.getMessage());
           }
           Gson gson = new Gson();
           PagePOJO pojo;
@@ -145,7 +171,7 @@ public class JsonReader implements Closeable{
 			pojo = gson.fromJson(json, PagePOJO.class);
 		} catch (JsonSyntaxException e) {
 			flag = flag + i;
-			e.printStackTrace();
+			logger.warn(json+"格式错误");
 			return null;
 		}
           hit.setPagePOJO(pojo);
@@ -172,7 +198,11 @@ public class JsonReader implements Closeable{
 	}
 	
 	public void close() throws IOException{
-		this.fis.close();
+		try {
+			this.fis.close();
+		} catch (Exception e) {
+			logger.error("fis关闭失败"+e.getMessage());
+		}
 	}
 
 }

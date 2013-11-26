@@ -3,6 +3,8 @@
  */
 package com.gs.crawler;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 
 /**
@@ -17,6 +19,7 @@ public class PagePOJO {
 	public int id;
 	public String title;
 	public String content;
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	public PagePOJO() {
 

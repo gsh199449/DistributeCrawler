@@ -3,6 +3,8 @@ package com.gs.crawler;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.gs.extractor.HTMLDownloader;
 import com.gs.extractor.TecentNewsTitleExtrator;
 import com.gs.extractor.TencentNewsContentExtractor;
@@ -14,7 +16,7 @@ import com.gs.extractor.URL;
  * 
  */
 public class Crawler {
-	
+	private Logger logger = Logger.getLogger(this.getClass());
 	private int deepth;
 	
 	/**
@@ -85,7 +87,7 @@ public class Crawler {
 			pojo.setTitle(te.extractFromHtml(html));
 			resultList.add(pojo.toJson());//添加到结果List中
 			pojo = null;//置空pojo
-			System.out.println("Queue Size : " + queue.size() + "Level : "
+			logger.info("Queue Size : " + queue.size() + "Level : "
 					+ u.level + "URL : " + u.url);//打印当前Queue状态
 		}
 		return resultList;

@@ -30,7 +30,6 @@ public class Searcher {
 	private String indexField = "D:\\Test\\index";
 	private List<Hit> list;
 	private String docDirectory;
-
 	/**
 	 * @param indexField
 	 *            the indexfile
@@ -38,6 +37,10 @@ public class Searcher {
 	 *            the queryString
 	 * @return list a list of url
 	 */
+	public Searcher(String docDirectory) {
+		this.docDirectory = docDirectory;
+	}
+
 	public LinkedList<Hit> search(String queryString) {
 		LinkedList<Hit> hits = new LinkedList<Hit>();
 		try {
@@ -55,17 +58,24 @@ public class Searcher {
 				Document d = seacher.doc(sd.doc);
 				hit.setFileName(d.get("filename"));
 				hit.setStartOffset(Long.valueOf(d.get("startOffset")));
-				hit.setPagePOJO(JsonReader.read(new File(docDirectory+File.separator+hit.getFileName()), hit.getStartOffset()));//FIXME
+				PagePOJO pojo = JsonReader.read(new File(docDirectory
+						+ File.separator + hit.getFileName()),
+						hit.getStartOffset());
+				if (pojo == null) {
+					hit = null;
+					pojo = null;
+					continue;
+				}
+				hit.setPagePOJO(pojo);// FIXME
 				hits.add(hit);
 			}
 			seacher.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return hits;
 	}
-	
 
 }
