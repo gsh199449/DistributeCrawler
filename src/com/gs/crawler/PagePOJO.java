@@ -12,14 +12,13 @@ import com.google.gson.Gson;
  * @packageName com.gs.utils
  */
 public class PagePOJO {
-	/**
-	 * 
-	 */
+	
+	//不可加logger，Gson会把它当成一个json中的一个项目，最后导致溢出。 况且POJO带一个logger也没啥用。
+	 
 	public String url;
 	public int id;
 	public String title;
 	public String content;
-	private Logger logger = Logger.getLogger(this.getClass());
 	
 	public PagePOJO() {
 

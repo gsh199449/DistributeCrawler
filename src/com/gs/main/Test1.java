@@ -69,7 +69,7 @@ public class Test1 {
 			for (URL u : le
 					.extractFromHtml(new HTMLDownloader().down(new URL(
 							"http://news.qq.com", 1)), 1)) {
-				data += (u.url + "\n");
+				data += (u.url + "\r");//FIXME 好像必须得用r，\n好像就不行
 			}
 			FileUtils.writeStringToFile(new File(localSrc), data);
 		} catch (IOException e) {

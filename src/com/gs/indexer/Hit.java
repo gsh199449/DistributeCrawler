@@ -8,12 +8,31 @@ public class Hit {
                 this.startOffset = startOffset;
                 this.fileName = filename;
         }
+        public Hit(PagePOJO pagePOJO, long startOffset,String filename,String clazz) {
+            this.pagePOJO = pagePOJO;
+            this.startOffset = startOffset;
+            this.fileName = filename;
+            this.clazz = clazz;
+    }
         public Hit() {
         }
         private PagePOJO pagePOJO;
         private long startOffset;
         private String fileName;
+        private String clazz;
         /**
+		 * @return the clazz
+		 */
+		public String getClazz() {
+			return clazz;
+		}
+		/**
+		 * @param clazz the clazz to set
+		 */
+		public void setClazz(String clazz) {
+			this.clazz = clazz;
+		}
+		/**
          * @return the pagePOJO
          */
         public PagePOJO getPagePOJO() {
@@ -49,18 +68,17 @@ public class Hit {
 		public void setFileName(String fileName) {
 			this.fileName = fileName;
 		}
-		/**
-         * @return the endOffset
-         */
-        /* (non-Javadoc)
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-                return "Hit ["
-                                + (pagePOJO != null ? "pagePOJO=" + pagePOJO + ", " : "")
-                                + "startOffset=" + startOffset + "]";
-        }
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return "Hit ["
+					+ (pagePOJO != null ? "pagePOJO=" + pagePOJO + ", " : "")
+					+ "startOffset=" + startOffset + ", "
+					+ (fileName != null ? "fileName=" + fileName + ", " : "")
+					+ (clazz != null ? "clazz=" + clazz : "") + "]";
+		}
         
         
 }

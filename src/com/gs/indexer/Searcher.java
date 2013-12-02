@@ -19,6 +19,7 @@ import org.apache.lucene.util.Version;
 import org.apache.lucene.document.Document;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+import com.gs.Classifier.BayesClassifier;
 import com.gs.crawler.PagePOJO;
 
 /**
@@ -30,6 +31,7 @@ public class Searcher {
 	private String indexField = "D:\\Test\\index";
 	private List<Hit> list;
 	private String docDirectory;
+
 	/**
 	 * @param indexField
 	 *            the indexfile
@@ -53,6 +55,7 @@ public class Searcher {
 			Query q = query.parse(queryString);
 			TopDocs td = seacher.search(q, 10);
 			ScoreDoc[] sds = td.scoreDocs;
+			BayesClassifier classifier = BayesClassifier.getInstance();//构造Bayes分类器
 			for (ScoreDoc sd : sds) {
 				Hit hit = new Hit();
 				Document d = seacher.doc(sd.doc);
@@ -66,7 +69,8 @@ public class Searcher {
 					pojo = null;
 					continue;
 				}
-				hit.setPagePOJO(pojo);// FIXME
+				hit.setPagePOJO(pojo);
+				hit.setClazz(classifier.classify(hit.getPagePOJO().getContent()));//写入类别
 				hits.add(hit);
 			}
 			seacher.close();
