@@ -3,7 +3,6 @@ package com.gs.indexer;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -23,9 +22,6 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
  */
 public class Indexer {
 	private Logger logger = Logger.getLogger(this.getClass());
-	private String indexField;
-	private String docsField;
-	private String encoding = "GB2312";
 
 	/**
 	 * @param indexField
@@ -35,8 +31,6 @@ public class Indexer {
 	 */
 	public void index(String indexField, String docsField) {
 		try {
-			this.indexField = indexField;
-			this.docsField = docsField;
 			Directory directory = FSDirectory.open(new File(indexField));
 			IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
 					new IKAnalyzer());
