@@ -44,12 +44,13 @@ public class Test1 {
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();
-			Crawler c = new Crawler(key.toString(),30,5);// 以Input文件的行偏移量作为crawler的id
+			Crawler c = new Crawler(key.toString(),60,3);// 以Input文件的行偏移量作为crawler的id
 			System.out.println(key.toString() + "\t" + value.toString());// 打印此map获得的连接以及在文件中的偏移量
 			for (String s : c.crawl(value.toString())) {
 				if (s == null || s.equals(""))// 如果内容为空，则不向context中写入
 					continue;
 				r += s;// 向context中写入Json
+				r += "\r";// 换行
 			}
 			System.out.println(r);// 打印此map函数抓取的json内容
 			if (!r.equals("")) {
@@ -69,7 +70,7 @@ public class Test1 {
 			for (URL u : le
 					.extractFromHtml(new HTMLDownloader().down(new URL(
 							"http://news.qq.com", 1)), 1)) {
-				data += (u.url + "\r");//FIXME 好像必须得用r，\n好像就不行
+				data += (u.url + "\n");
 			}
 			FileUtils.writeStringToFile(new File(localSrc), data);
 		} catch (IOException e) {
