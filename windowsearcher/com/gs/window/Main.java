@@ -30,10 +30,11 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 
-import com.gs.searcher.Indexer;
-import com.gs.searcher.Hit;
-import com.gs.searcher.PagePOJO;
-import com.gs.searcher.Searcher;
+import com.gs.indexer.Indexer;
+import com.gs.indexer.Hit;
+import com.gs.crawler.PagePOJO;
+import com.gs.indexer.Searcher;
+import java.awt.Font;
 
 public class Main {
 
@@ -84,10 +85,10 @@ public class Main {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 752, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
+					.addGap(0))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -125,12 +126,12 @@ public class Main {
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addGap(60)
 							.addComponent(lblNewLabel)))
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addGap(111)
 							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 105, Short.MAX_VALUE))
-						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED, 125, Short.MAX_VALUE))
+						.addGroup(gl_panel_1.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(button)
 							.addGap(148)))
@@ -140,8 +141,8 @@ public class Main {
 					.addGap(130))
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 701, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(16, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 721, Short.MAX_VALUE)
+					.addGap(16))
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -167,6 +168,7 @@ public class Main {
 		);
 		
 		final JTextPane textPane = new JTextPane();
+		textPane.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
 		scrollPane.setViewportView(textPane);
 		textPane.setEditable(false);
 		panel_1.setLayout(gl_panel_1);
