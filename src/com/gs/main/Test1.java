@@ -34,6 +34,13 @@ import com.gs.extractor.URL;
  *	我们认为url.txt中的连接为0深度，所设置的deepth为页面level。
  */
 public class Test1 {
+	private static String dst = "hdfs://gs-pc:9000/home/test/qq.txt";//首页的链接暂存地
+    private static String localSrc = "/home/gaoshen/qq.txt";//在master机器的暂存地
+    private static int depth = 3;//深度
+    private static int topN = 50;//每页抓取的最大链接数
+    private static String outputPath = "hdfs://gs-pc:9000/home/test/output";//最终结果的输出路径
+    private static String url = "http://news.qq.com";//需要抓取的地址
+    private static String jobName = "DistributeCrawler";//Job的名称
 	/**
 	 * @author gaoshen
 	 *	Mapper类
@@ -44,12 +51,13 @@ public class Test1 {
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();
-			Crawler c = new Crawler(key.toString(),30,5);// 以Input文件的行偏移量作为crawler的id
+			Crawler c = new Crawler(key.toString(),topN,depth);// 以Input文件的行偏移量作为crawler的id
 			System.out.println(key.toString() + "\t" + value.toString());// 打印此map获得的连接以及在文件中的偏移量
 			for (String s : c.crawl(value.toString())) {
 				if (s == null || s.equals(""))// 如果内容为空，则不向context中写入
 					continue;
 				r += s;// 向context中写入Json
+				r+="\r";
 			}
 			System.out.println(r);// 打印此map函数抓取的json内容
 			if (!r.equals("")) {
@@ -57,10 +65,7 @@ public class Test1 {
 			}
 		}
 	}
-	private static String dst = "hdfs://gs-pc:9000/home/test/qq.txt";
-	private static String localSrc = "/home/gaoshen/qq.txt";
-
-	private static String outputPath = "hdfs://gs-pc:9000/home/test/output";
+	
 
 	public static void main(String[] args) throws Exception {
 		try {
@@ -68,8 +73,8 @@ public class Test1 {
 			String data = new String();
 			for (URL u : le
 					.extractFromHtml(new HTMLDownloader().down(new URL(
-							"http://news.qq.com", 1)), 1)) {
-				data += (u.url + "\r");//FIXME 好像必须得用r，\n好像就不行
+							url, 1)), 1)) {
+				data += (u.url);
 			}
 			FileUtils.writeStringToFile(new File(localSrc), data);
 		} catch (IOException e) {
@@ -88,7 +93,7 @@ public class Test1 {
 		IOUtils.copyBytes(in, out, 4096, true);// 4096为buffersize
 		// 以上内容为抽取news.qq.com首页的链接，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
 
-		Job job = new Job(conf, "DistributeCrawler");
+		Job job = new Job(conf, jobName);
 
 		job.setJarByClass(Test1.class);
 		job.setMapperClass(CrawlMapper.class);
