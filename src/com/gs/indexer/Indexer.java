@@ -44,10 +44,13 @@ public class Indexer {
 				while (jr.hasNext()) {
 					doc = new Document();
 					Hit hit = jr.next();
-					if(hit == null) continue;
-					doc.add(new Field("content", hit.getPagePOJO().getContent(), Field.Store.NO,
+					if (hit == null)
+						continue;
+					doc.add(new Field("content",
+							hit.getPagePOJO().getContent(), Field.Store.NO,
 							Field.Index.ANALYZED));
-					doc.add(new NumericField("startOffset", Field.Store.YES, false).setLongValue(hit.getStartOffset()));
+					doc.add(new NumericField("startOffset", Field.Store.YES,
+							false).setLongValue(hit.getStartOffset()));
 					doc.add(new Field("filename", hit.getFileName(),
 							Field.Store.YES, Field.Index.NOT_ANALYZED));
 					writer.addDocument(doc);
@@ -55,7 +58,7 @@ public class Indexer {
 				jr.close();
 			}
 			writer.close();
-			
+
 		} catch (CorruptIndexException e) {
 			logger.error(e.getMessage());
 		} catch (LockObtainFailedException e) {
@@ -66,14 +69,15 @@ public class Indexer {
 			logger.error(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * @author GS
 	 * @param indexField
 	 * @param docsField
-	 * @param docnumber 需要的结果数量
+	 * @param docnumber
+	 *            需要的结果数量
 	 */
-	public void index(String indexField, String docsField,int docnumber) {
+	public void index(String indexField, String docsField, int docnumber) {
 		try {
 			Directory directory = FSDirectory.open(new File(indexField));
 			IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
@@ -87,10 +91,13 @@ public class Indexer {
 				while (jr.hasNext()) {
 					doc = new Document();
 					Hit hit = jr.next();
-					if(hit == null) continue;
-					doc.add(new Field("content", hit.getPagePOJO().getContent(), Field.Store.NO,
+					if (hit == null)
+						continue;
+					doc.add(new Field("content",
+							hit.getPagePOJO().getContent(), Field.Store.NO,
 							Field.Index.ANALYZED));
-					doc.add(new NumericField("startOffset", Field.Store.YES, false).setLongValue(hit.getStartOffset()));
+					doc.add(new NumericField("startOffset", Field.Store.YES,
+							false).setLongValue(hit.getStartOffset()));
 					doc.add(new Field("filename", hit.getFileName(),
 							Field.Store.YES, Field.Index.NOT_ANALYZED));
 					writer.addDocument(doc);
@@ -98,7 +105,7 @@ public class Indexer {
 				jr.close();
 			}
 			writer.close();
-			
+
 		} catch (CorruptIndexException e) {
 			logger.error(e.getMessage());
 		} catch (LockObtainFailedException e) {
@@ -109,7 +116,7 @@ public class Indexer {
 			logger.error(e.getMessage());
 		}
 	}
-	
+
 	public void indexForCarrot2(String indexField, String docsField) {
 		try {
 			Directory directory = FSDirectory.open(new File(indexField));
@@ -124,18 +131,22 @@ public class Indexer {
 				while (jr.hasNext()) {
 					doc = new Document();
 					Hit hit = jr.next();
-					if(hit == null) continue;
-					 doc.add(new Field("fullContent", hit.getPagePOJO().content, Field.Store.NO,Field.Index.ANALYZED));
-
-			            doc.add(new Field("title", hit.getPagePOJO().getTitle(), Field.Store.YES,Field.Index.ANALYZED));
-			            doc.add(new Field("snippet", hit.getPagePOJO().content, Field.Store.YES,Field.Index.ANALYZED));
-			            doc.add(new Field("url", hit.getPagePOJO().url, Field.Store.YES,Field.Index.ANALYZED));
+					if (hit == null)
+						continue;
+					doc.add(new Field("fullContent", hit.getPagePOJO().content,
+							Field.Store.NO, Field.Index.ANALYZED));
+					doc.add(new Field("title", hit.getPagePOJO().getTitle(),
+							Field.Store.YES, Field.Index.ANALYZED));
+					doc.add(new Field("snippet", hit.getPagePOJO().content,
+							Field.Store.YES, Field.Index.ANALYZED));
+					doc.add(new Field("url", hit.getPagePOJO().url,
+							Field.Store.YES, Field.Index.ANALYZED));
 					writer.addDocument(doc);
 				}
 				jr.close();
 			}
 			writer.close();
-			
+
 		} catch (CorruptIndexException e) {
 			logger.error(e.getMessage());
 		} catch (LockObtainFailedException e) {
