@@ -43,6 +43,6 @@ jj = new Jedis("localhost",8888);
 
 ## 训练贝叶斯分类器 ##
 1. 将训练集生成为`TrainingDataManager`识别放map格式。
-2. 调用`MapMaker`的make方法，传入训练集的根目录。会在每一个分类的目录下生成一个map文件，里面是存储当前分类的每一个词的词频
-首先在`TrainingDataManager`中设置训练好的map的路径。
+2. 调用`MapMaker`的make方法，传入训练集的根目录。会在每一个分类的目录下生成一个map文件，里面是存储当前分类的每一个词的词频。注意：如果训练集的文本不是txt或者TXT格式的话需要在`make`方法里面设置文件类型。
+3. 在`TrainingDataManager`中设置训练好的map的路径，也就是训练集的根路径。
  
