@@ -11,7 +11,7 @@ public class TestIndexer {
 	@Test
 	public void test() {
 		Indexer i = new Indexer();
-		i.index("D://Test//index", "D://Test//json");
+		i.indexForCarrot2("D://Test//CarrotIndex", "D://Test//json");
 	}
 
 }
