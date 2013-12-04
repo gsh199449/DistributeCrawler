@@ -23,6 +23,7 @@ DistributeCrawler
 jj = new Jedis("localhost",8888);
 ```
 3.然后就可以在Hadoop平台上运行了。
+
 # 抓取流程 #
 1. 首先先从`news.qq.com`上下载首页的所有连接。并存储到master本地，再写入HDFS。
 2. 然后通过HDFS的本地计算将一个文件分发到各台Slaves上面。
@@ -30,8 +31,18 @@ jj = new Jedis("localhost",8888);
 4. 每个页面通过`HttpClient`下载完成后，通过正则表达式进行过滤，只保留正文和标题，同时将这个页面封装为一个`PagePOJO`的POJO。这个POJO包含了正文，标题，URL，该页面的ID号（ID号是通过种子地址在种子文件中的偏移量也就是我们所谓的当前Slaves机器的ID号+一个叠加的计数器，即`ID=CrawlerID+counter`）。
 5. 然后将这个POJO交给Json生成器来生成一个Json内容。
 6. 最后通过Hadoop的`context`写入。
-7. 
+
 # 索引流程 #
 1. 首先通过`JsonReader`一行一行的读出json内容（每一行是一个Json表达式）。`JsonReader`是通过`RandomAccessFil`e来实现的。因为他既可以满足从`InputStream`中按行读入的要求，还带有获取当前偏移量和skip方法，极为的好用。`JsonReader`返回一个`Hit`类型的封装。`Hit`封装了PagePOJO、文件名和在此文件中的起始偏移量。
 2. 提取出每一个`Hi`t里面的正文、文件名和偏移量，并用`Lucene`索引。不储存content，但是储存文件名和起始偏移量。这样就可以摆脱对数据库的依赖。
 
+# 贝叶斯分类器 #
+- 在搜索方法中加入了分类的逻辑，如果搜索时在参数中声明需要分类
+，则通过贝叶斯方法进行分类。
+- 使用贝叶斯分类器的时候，要进行参数设置，并通过`MapMaker`生成每一个类的map，即训练分类器。
+
+## 训练贝叶斯分类器 ##
+1. 将训练集生成为`TrainingDataManager`识别放map格式。
+2. 调用`MapMaker`的make方法，传入训练集的根目录。会在每一个分类的目录下生成一个map文件，里面是存储当前分类的每一个词的词频
+首先在`TrainingDataManager`中设置训练好的map的路径。
+ 
