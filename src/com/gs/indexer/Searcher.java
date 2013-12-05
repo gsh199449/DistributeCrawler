@@ -28,7 +28,7 @@ import com.gs.crawler.PagePOJO;
  */
 public class Searcher {
 	private Logger logger = Logger.getLogger(this.getClass());
-	private String indexField = "D:\\Test\\index";
+	private String indexField;
 	private List<Hit> list;
 	private String docDirectory;
 
