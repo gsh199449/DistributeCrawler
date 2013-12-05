@@ -44,6 +44,7 @@ public class Main {
 	private JTextField txtDtestjson;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	private JTextField txtDtestindex;
 
 	/**
 	 * Launch the application.
@@ -104,7 +105,7 @@ public class Main {
 		
 		
 		
-		JLabel lblNewLabel = new JLabel("指定路径");
+		JLabel lblNewLabel = new JLabel("文本路径");
 		
 		txtDtestjson = new JTextField();
 		txtDtestjson.setText("D://Test//Json");
@@ -112,58 +113,72 @@ public class Main {
 		
 		final JCheckBox checkBox = new JCheckBox("显示新闻内容");
 		JButton button = new JButton("搜索");
-		JCheckBox checkBox_1 = new JCheckBox("聚类");
+		final JCheckBox checkBox_1 = new JCheckBox("分类");
 		
 		JScrollPane scrollPane = new JScrollPane();
+		
+		JLabel lblNewLabel_3 = new JLabel("索引路径");
+		
+		txtDtestindex = new JTextField();
+		txtDtestindex.setText("D://Test//index");
+		txtDtestindex.setColumns(10);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(21)
-							.addComponent(txtDtestjson, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(60)
-							.addComponent(lblNewLabel)))
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(111)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 125, Short.MAX_VALUE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(button)
-							.addGap(148)))
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addComponent(checkBox)
-						.addComponent(checkBox_1))
-					.addGap(130))
-				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 721, Short.MAX_VALUE)
-					.addGap(16))
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblNewLabel_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(18)
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addComponent(txtDtestindex)
+								.addComponent(txtDtestjson, GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_1.createSequentialGroup()
+									.addGap(55)
+									.addComponent(textField, GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
+								.addGroup(gl_panel_1.createSequentialGroup()
+									.addGap(107)
+									.addComponent(button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addGap(36)))
+							.addGap(71)
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addComponent(checkBox, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(gl_panel_1.createSequentialGroup()
+									.addComponent(checkBox_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addGap(48)))
+							.addGap(165))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE)
+							.addGap(16))))
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(8)
-							.addComponent(lblNewLabel)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(txtDtestjson, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(checkBox, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(18)
+							.addComponent(checkBox_1))
 						.addGroup(gl_panel_1.createSequentialGroup()
-							.addContainerGap()
 							.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(checkBox))
-							.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(lblNewLabel)
+								.addComponent(txtDtestjson)
+								.addComponent(textField))
+							.addGap(18)
 							.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(checkBox_1)
-								.addComponent(button))))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+								.addComponent(lblNewLabel_3)
+								.addGroup(gl_panel_1.createSequentialGroup()
+									.addGap(2)
+									.addComponent(txtDtestindex))
+								.addComponent(button, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(2)))
+					.addGap(26)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		
@@ -294,8 +309,8 @@ public class Main {
 		panel_3.setLayout(gl_panel_3);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Searcher s = new Searcher(txtDtestjson.getText());
-				LinkedList<Hit> list = s.search(textField.getText());
+				Searcher s = new Searcher(txtDtestjson.getText(),txtDtestindex.getText());
+				LinkedList<Hit> list = s.search(textField.getText(),checkBox_1.isSelected());
 				String re = "";
 				for(Hit h : list){
 					PagePOJO pojo = h.getPagePOJO();

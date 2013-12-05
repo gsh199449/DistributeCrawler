@@ -38,6 +38,8 @@ public class TencentNewsContentExtractor implements ContentExtractor {
 		re = mt3.replaceAll("");*///FIXME 这个标签不知道为什么抹不掉
 		re = re.replaceAll("<.*?>", "");//抹掉所有尖括号的内容
 		re = re.replaceAll("\\s", "");//抹掉所有空白
+		re = re.replaceAll("正在播放", "");//停用词
+		re = re.replaceAll("资料图", "");//停用词
 		return re;
 	}
 

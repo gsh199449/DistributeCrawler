@@ -28,7 +28,7 @@ import com.gs.crawler.PagePOJO;
  */
 public class Searcher {
 	private Logger logger = Logger.getLogger(this.getClass());
-	private String indexField = "D:\\Test\\index";
+	private String indexField;
 	private List<Hit> list;
 	private String docDirectory;
 
@@ -39,11 +39,12 @@ public class Searcher {
 	 *            the queryString
 	 * @return list a list of url
 	 */
-	public Searcher(String docDirectory) {
+	public Searcher(String docDirectory, String indexField) {
 		this.docDirectory = docDirectory;
+		this.indexField = indexField;
 	}
 
-	public LinkedList<Hit> search(String queryString) {
+	public LinkedList<Hit> search(String queryString, boolean classify) {
 		LinkedList<Hit> hits = new LinkedList<Hit>();
 		try {
 			File path = new File(indexField);
@@ -55,7 +56,6 @@ public class Searcher {
 			Query q = query.parse(queryString);
 			TopDocs td = seacher.search(q, 10);
 			ScoreDoc[] sds = td.scoreDocs;
-			BayesClassifier classifier = BayesClassifier.getInstance();//构造Bayes分类器
 			for (ScoreDoc sd : sds) {
 				Hit hit = new Hit();
 				Document d = seacher.doc(sd.doc);
@@ -70,7 +70,10 @@ public class Searcher {
 					continue;
 				}
 				hit.setPagePOJO(pojo);
-				hit.setClazz(classifier.classify(hit.getPagePOJO().getContent()));//写入类别
+				if (classify) {
+					hit.setClazz(BayesClassifier.getInstance().classify(
+							hit.getPagePOJO().getContent()));// 写入类别
+				}
 				hits.add(hit);
 			}
 			seacher.close();
