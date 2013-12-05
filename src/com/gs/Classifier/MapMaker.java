@@ -7,10 +7,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.wltea.analyzer.core.IKSegmenter;
@@ -26,7 +28,7 @@ public class MapMaker {
 					extensions, true);
 			while (iterateFiles.hasNext()) {
 				File current = iterateFiles.next();
-				for (String key : extractSingle(current).keySet()) {
+				for (String key : extractSingle(current)) {
 					double freq = (double) (map.get(key) == null ? 0
 							: (double) map.get(key));
 					map.put(key, freq == 0 ? 1 : freq + 1);
@@ -47,9 +49,15 @@ public class MapMaker {
 		}
 	}
 
-	public Map<String, Integer> extractSingle(File current) {
+	/**
+	 * 抽取单个文件的词,返回一个Set
+	 * @author GS
+	 * @param current
+	 * @return
+	 */
+	public Set<String> extractSingle(File current) {
 		FileReader d = null;
-		List<String> list = new LinkedList<String>();// sped aritical
+		Set<String> list = new HashSet<String>();// sped aritical
 		try {
 			d = new FileReader(current);
 			IKSegmenter ik = new IKSegmenter(d, true);
@@ -70,12 +78,6 @@ public class MapMaker {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Map<String, Integer> m = new HashMap<String, Integer>();
-		for (String word : list) {
-			int freq = (Integer) m.get(word) == null ? 0 : (Integer) m
-					.get(word);
-			m.put(word, freq == 0 ? 1 : freq + 1);
-		}
-		return m;
+		return list;
 	}
 }
