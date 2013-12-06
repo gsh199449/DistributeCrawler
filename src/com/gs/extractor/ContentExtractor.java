@@ -10,7 +10,6 @@ package com.gs.extractor;
  * @packageName com.gs.extractor
  */
 public interface ContentExtractor {
-	public String extract(String url);
 	public String extractFromHtml(String Html);
 	
 }
