@@ -10,6 +10,7 @@ import java.net.URI;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
@@ -74,7 +75,7 @@ public class Test1 {
 			for (URL u : le
 					.extractFromHtml(new HTMLDownloader().down(new URL(
 							url, 1)), 1)) {
-				data += (u.url);
+				data += (u.url+"\n");
 			}
 			FileUtils.writeStringToFile(new File(localSrc), data);
 		} catch (IOException e) {
@@ -92,16 +93,17 @@ public class Test1 {
 		});
 		IOUtils.copyBytes(in, out, 4096, true);// 4096为buffersize
 		// 以上内容为抽取news.qq.com首页的链接，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
-
+		DistributedCache.addArchiveToClassPath(new Path("hdfs://gs-pc:9000/home/test/libs"), conf);
+		conf.set("mapred.jar", "/home/gaoshen/dsCrawler.jar");
 		Job job = new Job(conf, jobName);
-
 		job.setJarByClass(Test1.class);
+		
 		job.setMapperClass(CrawlMapper.class);
 		job.setOutputKeyClass(NullWritable.class);
 		job.setOutputValueClass(Text.class);
 		FileInputFormat.addInputPath(job, new Path(dst));
 		FileOutputFormat.setOutputPath(job, new Path(outputPath));
-		job.submit();
+		//job.submit();
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 
