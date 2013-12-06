@@ -82,7 +82,7 @@ public class Cluster {
 		Iterator<PagePOJO> it = list.iterator();
 		while (it.hasNext()) {
 			PagePOJO pojo = it.next();
-			documents.add(new Document(pojo.getTitle(), pojo.getContent()));
+			documents.add(new Document(pojo.getTitle(), pojo.getContent(),LanguageCode.CHINESE_SIMPLIFIED));
 		}
 		final Map<String, Object> attributes = Maps.newHashMap();
 		CommonAttributesDescriptor.attributeBuilder(attributes).documents(
