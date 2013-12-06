@@ -44,7 +44,7 @@ public class Searcher {
 		this.indexField = indexField;
 	}
 
-	public LinkedList<Hit> search(String queryString, boolean classify) {
+	public LinkedList<Hit> search(String queryString, boolean classify,int topDocs) {
 		LinkedList<Hit> hits = new LinkedList<Hit>();
 		try {
 			File path = new File(indexField);
@@ -54,7 +54,7 @@ public class Searcher {
 			QueryParser query = new QueryParser(Version.LUCENE_35, "content",
 					new IKAnalyzer());
 			Query q = query.parse(queryString);
-			TopDocs td = seacher.search(q, 10);
+			TopDocs td = seacher.search(q, topDocs);
 			ScoreDoc[] sds = td.scoreDocs;
 			for (ScoreDoc sd : sds) {
 				Hit hit = new Hit();
