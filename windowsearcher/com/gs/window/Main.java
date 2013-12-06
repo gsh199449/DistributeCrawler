@@ -3,6 +3,8 @@ package com.gs.window;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.TextArea;
+import java.awt.TextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -12,6 +14,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -55,6 +58,8 @@ public class Main {
 	private JTextField txtDtestindex;
 	private JComboBox<String> comboBox;
 	private JTextField textField_3;
+	private Map<String,List<String>> clusterResult;
+	private JTextArea textArea_1;
 
 	/**
 	 * Launch the application.
@@ -134,6 +139,15 @@ public class Main {
 		txtDtestindex.setColumns(10);
 		
 		comboBox = new JComboBox<String>();
+		comboBox.addItemListener(new ItemListener() {
+
+			public void itemStateChanged(ItemEvent arg0) {
+				textArea_1.setText(arg0.getItem().toString()+"\n========================\n");
+				for(String title : clusterResult.get(arg0.getItem())){
+					textArea_1.append(title+"\n");
+				}
+			}
+		});
 		
 		textField_3 = new JTextField();
 		textField_3.setText("10");
@@ -236,10 +250,10 @@ public class Main {
 					.addContainerGap())
 		);
 		
-		final JTextPane textPane = new JTextPane();
-		textPane.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
-		scrollPane.setViewportView(textPane);
-		textPane.setEditable(false);
+		textArea_1 = new JTextArea();
+		textArea_1.setLineWrap(true);
+		textArea_1.setEditable(false);
+		scrollPane.setViewportView(textArea_1);
 		panel_1.setLayout(gl_panel_1);
 		
 		button.setAction(action);
@@ -375,25 +389,24 @@ public class Main {
 					}
 				}
 				if(re.equals(""))re="找不到"+textField.getText();
-				textPane.setText(re);
+				textArea_1.setText(re);
 				if (checkBox_2.isSelected()) {
 					List<PagePOJO> l = new LinkedList<PagePOJO>();
 					while (!list.isEmpty()) {
 						l.add(list.pop().getPagePOJO());
 					}
-					ProcessingResult r = null;
+					clusterResult = null;
 					try {
-						r = new Cluster().cluster(l);
+						clusterResult = new Cluster().cluster(l);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-					Iterator<org.carrot2.core.Cluster> it = r.getClusters()
-							.iterator();
+					Iterator<String> it = clusterResult.keySet().iterator();
 					comboBox.removeAllItems();
 					while (it.hasNext()) {
-						comboBox.addItem(it.next().getLabel());
+						comboBox.addItem(it.next());
 					}
 				}
 				lblNewLabel_5.setText("本次搜索用时"+(System.currentTimeMillis()-start)+"毫秒");
