@@ -43,8 +43,4 @@ public class TencentNewsContentExtractor implements ContentExtractor {
 		return re;
 	}
 
-	@Override
-	public String extract(String url) {
-		return null;
-	}
 }
