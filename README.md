@@ -52,6 +52,17 @@ jj = new Jedis("localhost",8888);
 # 使用Carrot2插件进行聚类 #
 在搜索模块包含了一个聚类插件,是通过Carrot2实现的,具体使用方法如下.
 ## 对所有的文档进行聚类 ##
-调用`com.gs.cluster.Cluster`这个类的cluster方法,并传入由Crawler爬取好的Json格式的文档的的路径,即可返回一个`ProcessingResult`类型的Result.
+调用`com.gs.cluster.Cluster`这个类的cluster方法,并传入由Crawler爬取好的Json格式的文档的的路径,即可返回一个`ProcessingResult`类型的Result.`ProcessingResult`里面的内容查看方法请参考[Carrot2文档](http://download.carrot2.org/stable/javadoc/).
 ## 对指定的文档进行聚类 ##
-这个方法适用于搜索时候对于搜索的结果进行聚类.搜索完毕之后将所以的`PagePOJO`封装成一个List传给cluster,聚类完毕之后和上面一样,返回一个类型为`ProcessingResult`的result.`ProcessingResult`里面的内容查看方法请参考[Carrot2文档](http://download.carrot2.org/stable/javadoc/).
+这个方法适用于搜索时候对于搜索的结果进行聚类.搜索完毕之后将索引的`PagePOJO`封装成一个List传给cluster,聚类完毕之后,返回一个类型为`Map<String,List<String>>`的result.`Map<String,List<String>>`.这个map的key存放的是类型的名称,value的List里面存放的是该类型包含的所有文档的标题.
+
+# 站点测试 #
+
+这个Pane是用来测试实验室的几个网站是否正常.
+
+# Index #
+这个Pane是用来对Hadoop爬虫处理好的Json格式的新闻内容进行索引的工具.主要通过Lucene实现索引.在Json框中输入文件所在的文件夹的位置,index框中输入需要存放index文件的文件夹的路径.
+
+# 下一步的工作 #
+
+- 爬虫在爬取的时候自动判断这个连接是属于那个网站的,并自动选择对应的连接和正文抽取器.
