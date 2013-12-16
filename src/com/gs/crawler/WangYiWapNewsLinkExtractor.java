@@ -1,30 +1,22 @@
-/**
- * GS
- */
-package com.gs.extractor;
+package com.gs.crawler;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.gs.extractor.LinkExtractor;
+import com.gs.extractor.URL;
 
-import com.gs.crawler.Crawler;
-
-/**
- * @author GaoShen
- * @packageName com.gs.extractor
- */
-public class TencentNewsLinkExtractor implements LinkExtractor {
+public class WangYiWapNewsLinkExtractor implements LinkExtractor {
 	private int deepth;
 	private int topN;
 
-	public TencentNewsLinkExtractor(int deepth, int topN) {
+	public WangYiWapNewsLinkExtractor(int deepth, int topN) {
 		this.topN = topN;
 		this.deepth = deepth;
 	}
 
-	public TencentNewsLinkExtractor() {}
+	public WangYiWapNewsLinkExtractor() {}
 
 	public LinkedList<URL> extractFromHtml(String html, final int level) {
 		LinkedList<URL> s = new LinkedList<URL>();
@@ -37,7 +29,7 @@ public class TencentNewsLinkExtractor implements LinkExtractor {
 		int counter = 0;// 已抽取的连接计数器
 		while (mt.find()) {
 			String u = mt.group(1);
-			if (u.startsWith("http://news.qq.com")
+			if (u.startsWith("http://3g.163.com/news")
 					&& (u.endsWith("htm") || u.endsWith("html") || u
 							.endsWith("shtml"))) {
 				URL re = new URL(u, level + 1);
@@ -49,7 +41,4 @@ public class TencentNewsLinkExtractor implements LinkExtractor {
 		}
 		return s;
 	}
-
-
-
 }

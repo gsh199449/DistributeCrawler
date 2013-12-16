@@ -1,17 +1,18 @@
 package com.gs.extractor;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
-
+/**
+ * http://3g.163.com/news
+ * @author GS
+ *
+ */
 public class WangYiWapNewsContentExtractor implements ContentExtractor {
-
 
 	@Override
 	public String extractFromHtml(String html) {
-		String regex = "<p class=\"para\">(.*?)</p>";
+		String regex = "<div class=\"content\">(.*?)</div>";
 		Pattern pt = Pattern.compile(regex,Pattern.DOTALL);
 		Matcher mt = pt.matcher(html);
 		String re = "";

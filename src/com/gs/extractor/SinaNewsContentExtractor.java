@@ -1,10 +1,7 @@
 package com.gs.extractor;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.FileUtils;
 
 public class SinaNewsContentExtractor implements ContentExtractor {
 

@@ -16,6 +16,7 @@ public class TencentNewsContentExtractor implements ContentExtractor {
 	 * @param html
 	 * @return
 	 */
+	@Override
 	public String extractFromHtml(String html) {
 		String re = new String();
 		if (html == null) {
