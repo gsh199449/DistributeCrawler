@@ -3,6 +3,7 @@
  */
 package com.gs.extractor;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -12,6 +13,5 @@ import java.util.List;
  * @packageName com.gs.extractor
  */
 public interface LinkExtractor {
-	public List<URL> extract(URL paurl, int topN);
-	public String getHtml();
+	public LinkedList<URL> extractFromHtml(String html, final int level);
 }
