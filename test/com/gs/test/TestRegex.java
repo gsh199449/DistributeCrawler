@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import com.gs.extractor.WangYiWapNewsContentExtractor;
+
 public class TestRegex {
 
 	@Test
@@ -31,5 +33,9 @@ public class TestRegex {
 		re = re.replaceAll("<.*?>", "");//抹掉所有尖括号的内容
 		re = re.replaceAll("\\s", "");//抹掉所有空白
 	}
-
+	@Test
+	public void test1() throws IOException{
+		WangYiWapNewsContentExtractor e  =new WangYiWapNewsContentExtractor();
+		System.out.println(e.extractFromHtml(FileUtils.readFileToString(new File("D://Test//4.txt"),"gb2312")));
+	}
 }

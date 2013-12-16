@@ -25,6 +25,7 @@ import org.apache.hadoop.util.Progressable;
 import org.apache.log4j.Logger;
 
 import com.gs.crawler.Crawler;
+import com.gs.crawler.NewsCenter;
 import com.gs.extractor.HTMLDownloader;
 import com.gs.extractor.TencentNewsLinkExtractor;
 import com.gs.extractor.URL;
@@ -52,9 +53,10 @@ public class Test1 {
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();
-			Crawler c = new Crawler(key.toString(),topN,depth);// 以Input文件的行偏移量作为crawler的id
+			//FIXME 现在只能抓取腾讯的新闻,没有做到根据传入的网址自动识别
+			Crawler c = new Crawler(key.toString(),NewsCenter.Tencent,value.toString(), topN,depth);// 以Input文件的行偏移量作为crawler的id
 			System.out.println(key.toString() + "\t" + value.toString());// 打印此map获得的连接以及在文件中的偏移量
-			for (String s : c.crawl(value.toString())) {
+			for (String s : c.start()) {
 				if (s == null || s.equals(""))// 如果内容为空，则不向context中写入
 					continue;
 				r += s;// 向context中写入Json
