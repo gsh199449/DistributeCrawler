@@ -1,5 +1,5 @@
 package com.gs.crawler;
 
 public enum NewsCenter {
-	Tencent,WangYiWap,Sina
+	Tencent,WangYiWap,Sina, Unknow
 }
