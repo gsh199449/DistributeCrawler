@@ -71,7 +71,7 @@ public class Test1 {
 
 	public static void main(String[] args) throws Exception {
 		try {
-			TencentNewsLinkExtractor le = new TencentNewsLinkExtractor();
+			TencentNewsLinkExtractor le = new TencentNewsLinkExtractor(2,100);
 			String data = new String();
 			for (URL u : le
 					.extractFromHtml(new HTMLDownloader().down(new URL(

@@ -15,7 +15,6 @@ public class SinaNewsLinkExtractor implements LinkExtractor {
 		this.deepth = deepth;
 	}
 
-	public SinaNewsLinkExtractor() {}
 
 	public LinkedList<URL> extractFromHtml(String html, final int level) {
 		LinkedList<URL> s = new LinkedList<URL>();

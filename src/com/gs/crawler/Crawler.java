@@ -64,17 +64,17 @@ public class Crawler {
 			break;
 		case Sina:
 			this.contentExtractor = new SinaNewsContentExtractor();
-			this.linkExtractor = new SinaNewsLinkExtractor();
+			this.linkExtractor = new SinaNewsLinkExtractor(deepth - 1, topN);
 			this.titleExtractor = new SinaNewsTitleExtractor();
 			break;
 		case WangYiWap:
 			this.contentExtractor = new WangYiWapNewsContentExtractor();
-			this.linkExtractor = new WangYiWapNewsLinkExtractor();
+			this.linkExtractor = new WangYiWapNewsLinkExtractor(deepth - 1, topN);
 			this.titleExtractor = new WangYiWapNewsTitleExtractor();
 			break;
 		case Unknow:
 			this.contentExtractor = new WangYiWapNewsContentExtractor();
-			this.linkExtractor = new WangYiWapNewsLinkExtractor();
+			this.linkExtractor = new WangYiWapNewsLinkExtractor(deepth - 1, topN);
 			this.titleExtractor = new WangYiWapNewsTitleExtractor();
 			break;
 		default:

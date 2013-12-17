@@ -24,7 +24,6 @@ public class TencentNewsLinkExtractor implements LinkExtractor {
 		this.deepth = deepth;
 	}
 
-	public TencentNewsLinkExtractor() {}
 
 	public LinkedList<URL> extractFromHtml(String html, final int level) {
 		LinkedList<URL> s = new LinkedList<URL>();

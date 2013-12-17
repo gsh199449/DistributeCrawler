@@ -14,7 +14,6 @@ public class WangYiWapNewsLinkExtractor implements LinkExtractor {
 		this.deepth = deepth;
 	}
 
-	public WangYiWapNewsLinkExtractor() {}
 
 	public LinkedList<URL> extractFromHtml(String html, final int level) {
 		LinkedList<URL> s = new LinkedList<URL>();
