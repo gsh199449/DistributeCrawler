@@ -53,8 +53,7 @@ public class Test1 {
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();
-			//FIXME 现在只能抓取腾讯的新闻,没有做到根据传入的网址自动识别
-			Crawler c = new Crawler(key.toString(),NewsCenter.Tencent,value.toString(), topN,depth);// 以Input文件的行偏移量作为crawler的id
+			Crawler c = new Crawler(key.toString(),value.toString(), topN,depth);// 以Input文件的行偏移量作为crawler的id
 			System.out.println(key.toString() + "\t" + value.toString());// 打印此map获得的连接以及在文件中的偏移量
 			for (String s : c.start()) {
 				if (s == null || s.equals(""))// 如果内容为空，则不向context中写入

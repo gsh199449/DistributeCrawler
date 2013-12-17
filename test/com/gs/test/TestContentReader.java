@@ -8,10 +8,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.gs.crawler.PagePOJO;
+import com.gs.extractor.DefaultContentExtractor;
 import com.gs.indexer.JsonReader;
 import com.gs.indexer.Hit;
 
@@ -37,5 +39,12 @@ public class TestContentReader {
 		String d = g.toJson(new PagePOJO("rrr",2,"yyy","t"));
 		System.out.println(d);
 	}
+	
+	@Test
+	public void testDefaultContentExtrator() throws IOException{
+		DefaultContentExtractor d = new DefaultContentExtractor();
+		System.out.println(d.extractFromHtml(FileUtils.readFileToString(new File("D://Test//123.txt"),"gb2312")));
+	}
+	
 
 }
