@@ -9,12 +9,16 @@ import com.gs.extractor.ContentExtractor;
 import com.gs.extractor.HTMLDownloader;
 import com.gs.extractor.LinkExtractor;
 import com.gs.extractor.SinaNewsContentExtractor;
+import com.gs.extractor.SinaNewsLinkExtractor;
+import com.gs.extractor.SinaNewsTitleExtractor;
 import com.gs.extractor.TecentNewsTitleExtractor;
 import com.gs.extractor.TencentNewsContentExtractor;
 import com.gs.extractor.TencentNewsLinkExtractor;
 import com.gs.extractor.TitleExtractor;
 import com.gs.extractor.URL;
 import com.gs.extractor.WangYiWapNewsContentExtractor;
+import com.gs.extractor.WangYiWapNewsLinkExtractor;
+import com.gs.extractor.WangYiWapNewsTitleExtractor;
 
 /**
  * @author gaoshen
@@ -46,13 +50,13 @@ public class Crawler {
 	 * @param topN
 	 * @param deepth
 	 */
-	public Crawler(String id, final NewsCenter newsCenter, String seed,
+	public Crawler(String id, String seed,
 			int topN, int deepth) {
 		this.id = id;
 		this.topN = topN;
 		this.deepth = deepth;
 		this.seed = seed;
-		switch (newsCenter) {
+		switch (NewsCenterMatcher.match(seed)) {
 		case Tencent:
 			this.contentExtractor = new TencentNewsContentExtractor();
 			this.linkExtractor = new TencentNewsLinkExtractor(deepth - 1, topN);
@@ -64,6 +68,11 @@ public class Crawler {
 			this.titleExtractor = new SinaNewsTitleExtractor();
 			break;
 		case WangYiWap:
+			this.contentExtractor = new WangYiWapNewsContentExtractor();
+			this.linkExtractor = new WangYiWapNewsLinkExtractor();
+			this.titleExtractor = new WangYiWapNewsTitleExtractor();
+			break;
+		case Unknow:
 			this.contentExtractor = new WangYiWapNewsContentExtractor();
 			this.linkExtractor = new WangYiWapNewsLinkExtractor();
 			this.titleExtractor = new WangYiWapNewsTitleExtractor();
