@@ -40,9 +40,10 @@ public class TrainingDataManager
 		String ss[] = traningTextDir.list();
 		for(int i= 0;i<ss.length;i++){
 			Map<String, Double> map = new HashMap<String, Double>();
+			ObjectInputStream ois = null;
 			try {
 				FileInputStream is = new FileInputStream(defaultPath+ss[i]+"\\map");
-				ObjectInputStream ois = new ObjectInputStream(is);
+				ois = new ObjectInputStream(is);
 				map = (Map<String, Double>) ois.readObject();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -50,6 +51,12 @@ public class TrainingDataManager
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
+			}finally{
+				try {
+					ois.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			classMap.put(ss[i], map);
 			map = null;
