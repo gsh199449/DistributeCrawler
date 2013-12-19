@@ -1,3 +1,11 @@
 eclipse.preferences.version=1
+encoding//python/pythonLearning/English.py=utf8
+encoding//python/pythonLearning/FileHandler.py=utf8
+encoding//python/pythonLearning/HTMLDownloader.py=utf8
+encoding//python/pythonLearning/TestMySQL.py=utf8
+encoding//python/pythonLearning/TestOS.py=utf8
+encoding//python/pythonLearning/TestTryExcept.py=utf8
+encoding//src/com/gs/Classifier/BayesClassifier.java=GBK
+encoding//src/com/gs/Classifier/TrainingDataManager.java=GBK
 encoding//src/com/gs/indexer/Indexer.java=UTF-8
 encoding/<project>=UTF-8
