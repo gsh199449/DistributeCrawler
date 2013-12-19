@@ -3,8 +3,6 @@
  */
 package com.gs.crawler;
 
-import org.apache.log4j.Logger;
-
 import com.google.gson.Gson;
 
 /**

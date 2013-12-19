@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.junit.Test;
 
 /**
 * ÆÓËØ±´Ò¶Ë¹·ÖÀàÆ÷

@@ -3,7 +3,6 @@ package com.gs.indexer;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.lucene.index.IndexReader;
@@ -29,7 +28,6 @@ import com.gs.crawler.PagePOJO;
 public class Searcher {
 	private Logger logger = Logger.getLogger(this.getClass());
 	private String indexField;
-	private List<Hit> list;
 	private String docDirectory;
 
 	/**

@@ -10,7 +10,6 @@ import java.net.URI;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
@@ -22,10 +21,8 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Progressable;
-import org.apache.log4j.Logger;
 
 import com.gs.crawler.Crawler;
-import com.gs.crawler.NewsCenter;
 import com.gs.extractor.HTMLDownloader;
 import com.gs.extractor.TencentNewsLinkExtractor;
 import com.gs.extractor.URL;
@@ -49,7 +46,6 @@ public class Test1 {
 	 */
 	public static class CrawlMapper extends
 			Mapper<LongWritable, Text, NullWritable, Text> {
-		private Logger logger = Logger.getLogger(this.getClass());
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			String r = new String();
@@ -73,8 +69,9 @@ public class Test1 {
 		try {
 			TencentNewsLinkExtractor le = new TencentNewsLinkExtractor(2,100);
 			String data = new String();
+			new HTMLDownloader();
 			for (URL u : le
-					.extractFromHtml(new HTMLDownloader().down(new URL(
+					.extractFromHtml(HTMLDownloader.down(new URL(
 							url, 1)), 1)) {
 				data += (u.url+"\n");
 			}
@@ -94,8 +91,6 @@ public class Test1 {
 		});
 		IOUtils.copyBytes(in, out, 4096, true);// 4096为buffersize
 		// 以上内容为抽取news.qq.com首页的链接，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
-		DistributedCache.addArchiveToClassPath(new Path("hdfs://gs-pc:9000/home/test/libs"), conf);
-		conf.set("mapred.jar", "/home/gaoshen/dsCrawler.jar");
 		Job job = new Job(conf, jobName);
 		job.setJarByClass(Test1.class);
 		

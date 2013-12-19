@@ -4,9 +4,6 @@
 package com.gs.extractor;
 
 import java.util.LinkedList;
-import java.util.List;
-
-
 
 /**
  * @author GaoShen
