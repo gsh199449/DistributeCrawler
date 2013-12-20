@@ -51,7 +51,6 @@ public class Main {
 
 	private JFrame frame;
 	private JTextField textField;
-	// private final Action action = new SwingAction();
 	private JTextField txtDtestjson;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -468,33 +467,39 @@ public class Main {
 		scrollPane_1.setViewportView(textArea);
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String url[] = { "http://202.206.64.193",
-						"http://202.206.64.193/caifeng",
-						"http://202.206.64.193/blog",
-						"http://202.206.64.193/phpMyAdmin" };
-				textArea.append("测试时间"
-						+ new Date(System.currentTimeMillis()).toLocaleString()
-						+ "\n");
-				for (int i = 0; i < url.length; i++) {
-					HttpClient hc = new HttpClient();
-					GetMethod get;
-					hc.setConnectionTimeout(5000);
-					get = new GetMethod(url[i]);
-					int status = 0;
-					try {
-						status = hc.executeMethod(get);
-					} catch (HttpException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						textArea.append("站点：" + url[i] + "\n状态码：" + status
-								+ "\n" + (status == 200 ? "正常" : "失败")
-								+ "\n=========\n");
+				Thread t = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						String url[] = { "http://202.206.64.193",
+								"http://202.206.64.193/caifeng",
+								"http://202.206.64.193/blog",
+								"http://202.206.64.193/phpMyAdmin" };
+						textArea.append("测试时间"
+								+ new Date(System.currentTimeMillis()).toLocaleString()
+								+ "\n");
+						for (int i = 0; i < url.length; i++) {
+							HttpClient hc = new HttpClient();
+							GetMethod get;
+							hc.setConnectionTimeout(5000);
+							get = new GetMethod(url[i]);
+							int status = 0;
+							try {
+								status = hc.executeMethod(get);
+							} catch (HttpException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
+								e.printStackTrace();
+							} finally {
+								textArea.append("站点：" + url[i] + "\n状态码：" + status
+										+ "\n" + (status == 200 ? "正常" : "失败")
+										+ "\n=========\n");
+							}
+							get.releaseConnection();
+							textArea.paintImmediately(textArea.getBounds());
+						}
 					}
-					get.releaseConnection();
-					textArea.paintImmediately(textArea.getBounds());
-				}
+				});
+				t.start();
 			}
 		});
 		panel_2.setLayout(gl_panel_2);
@@ -607,51 +612,58 @@ public class Main {
 		panel_3.setLayout(gl_panel_3);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				long start = System.currentTimeMillis();
-				Searcher s = new Searcher(txtDtestjson.getText(), txtDtestindex
-						.getText());
-				LinkedList<Hit> list = s.search(textField.getText(),
-						checkBox_1.isSelected(),
-						Integer.parseInt(textField_3.getText()));
-				String re = "";
-				for (Hit h : list) {
-					PagePOJO pojo = h.getPagePOJO();
-					re += pojo.title + "\n";
-					if (checkBox.isSelected()) {
-						re += pojo.content
-								+ "\n====================================\n";
+				lblNewLabel_5.setText("请稍候");
+				Thread t = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						long start = System.currentTimeMillis();
+						Searcher s = new Searcher(txtDtestjson.getText(), txtDtestindex
+								.getText());
+						LinkedList<Hit> list = s.search(textField.getText(),
+								checkBox_1.isSelected(),
+								Integer.parseInt(textField_3.getText()));
+						String re = "";
+						for (Hit h : list) {
+							PagePOJO pojo = h.getPagePOJO();
+							re += pojo.title + "\n";
+							if (checkBox.isSelected()) {
+								re += pojo.content
+										+ "\n====================================\n";
+							}
+						}
+						if (re.equals(""))
+							re = "找不到" + textField.getText();
+						textArea_1.setText(re);
+						if (checkBox_2.isSelected()) {
+							List<PagePOJO> l = new LinkedList<PagePOJO>();
+							while (!list.isEmpty()) {
+								l.add(list.pop().getPagePOJO());
+							}
+							clusterResult = null;
+							try {
+								clusterResult = new Cluster().cluster(l);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+							Iterator<String> it = clusterResult.keySet().iterator();
+							comboBox.removeAllItems();
+							while (it.hasNext()) {
+								comboBox.addItem(it.next());
+							}
+						}
+						lblNewLabel_5.setText("本次搜索用时"
+								+ (System.currentTimeMillis() - start) + "毫秒");
 					}
-				}
-				if (re.equals(""))
-					re = "找不到" + textField.getText();
-				textArea_1.setText(re);
-				if (checkBox_2.isSelected()) {
-					List<PagePOJO> l = new LinkedList<PagePOJO>();
-					while (!list.isEmpty()) {
-						l.add(list.pop().getPagePOJO());
-					}
-					clusterResult = null;
-					try {
-						clusterResult = new Cluster().cluster(l);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					Iterator<String> it = clusterResult.keySet().iterator();
-					comboBox.removeAllItems();
-					while (it.hasNext()) {
-						comboBox.addItem(it.next());
-					}
-				}
-				lblNewLabel_5.setText("本次搜索用时"
-						+ (System.currentTimeMillis() - start) + "毫秒");
+				});
+				t.start();
 			}
 		});
 
 	}
 
-	private class SwingAction extends AbstractAction {
+	/*private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "搜索");
 			putValue(SHORT_DESCRIPTION, "Some short description");
@@ -659,5 +671,5 @@ public class Main {
 
 		public void actionPerformed(ActionEvent e) {
 		}
-	}
+	}*/
 }
