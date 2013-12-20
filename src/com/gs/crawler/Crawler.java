@@ -6,6 +6,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.gs.extractor.ContentExtractor;
+import com.gs.extractor.DefaultContentExtractor;
+import com.gs.extractor.DefaultLinkExtractor;
+import com.gs.extractor.DefaultTitleExtractor;
 import com.gs.extractor.HTMLDownloader;
 import com.gs.extractor.LinkExtractor;
 import com.gs.extractor.SinaNewsContentExtractor;
@@ -22,7 +25,6 @@ import com.gs.extractor.WangYiWapNewsTitleExtractor;
 
 /**
  * @author gaoshen
- * 
  */
 public class Crawler {
 	private int deepth;
@@ -73,9 +75,9 @@ public class Crawler {
 			this.titleExtractor = new WangYiWapNewsTitleExtractor();
 			break;
 		case Unknow:
-			this.contentExtractor = new WangYiWapNewsContentExtractor();
-			this.linkExtractor = new WangYiWapNewsLinkExtractor(deepth - 1, topN);
-			this.titleExtractor = new WangYiWapNewsTitleExtractor();
+			this.contentExtractor = new DefaultContentExtractor();
+			this.linkExtractor = new DefaultLinkExtractor(deepth - 1, topN);
+			this.titleExtractor = new DefaultTitleExtractor();
 			break;
 		default:
 			break;
@@ -86,7 +88,7 @@ public class Crawler {
 	 * @param u
 	 *            添加URL到此Crawler的抓取队列中
 	 */
-	public void addURL(URL u) {
+	public synchronized void addURL(URL u) {
 		queue.add(u);
 	}
 
@@ -99,8 +101,9 @@ public class Crawler {
 		LinkedList<String> resultList = new LinkedList<String>();// 储存结果的List
 		queue.add(new URL(seed, 1));// 将种子装入带抓取的队列
 		int id = 0;// 每个页面的子ID号.
+		Redis r;
 		while (!queue.isEmpty()) {
-			Redis r = Redis.getInstance();// Redis为单例模式
+			r = Redis.getInstance();// Redis为单例模式
 			URL u = queue.remove();// 从队列里面拿出一个URL
 			if (r.hasFetched(u)) {
 				continue;
