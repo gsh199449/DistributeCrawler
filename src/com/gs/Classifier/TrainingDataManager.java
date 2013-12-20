@@ -149,28 +149,6 @@ public class TrainingDataManager
 	{
 		int ret = 0;
 		ret = (int) (classMap.get(classification).containsKey(key) ? classMap.get(classification).get(key):0);
-		/*try 
-		{
-			String[] filePath = getFilesPath(classification);
-			for (int j = 0; j < filePath.length; j++) 
-			{
-				String text = getText(filePath[j]);
-				if (text.contains(key)) 
-				{
-					ret++;
-				}
-			}
-		}
-		catch (FileNotFoundException ex) 
-		{
-			Logger.getLogger(TrainingDataManager.class.getName()).log(Level.SEVERE, null,ex);
-	
-		} 
-		catch (IOException ex)
-		{
-			Logger.getLogger(TrainingDataManager.class.getName()).log(Level.SEVERE, null,ex);
-	
-		}*/
 		return ret;
 	}
 }
