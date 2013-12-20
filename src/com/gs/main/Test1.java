@@ -48,14 +48,11 @@ public class Test1 {
 			Mapper<LongWritable, Text, NullWritable, Text> {
 		public void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
-			String r = new String();
+			String r = "";
 			Crawler c = new Crawler(key.toString(),value.toString(), topN,depth);// 以Input文件的行偏移量作为crawler的id
 			System.out.println(key.toString() + "\t" + value.toString());// 打印此map获得的连接以及在文件中的偏移量
 			for (String s : c.start()) {
-				if (s == null || s.equals(""))// 如果内容为空，则不向context中写入
-					continue;
-				r += s;// 向context中写入Json
-				r+="\r";
+				r += s + "\r";// 向context中写入Json
 			}
 			System.out.println(r);// 打印此map函数抓取的json内容
 			if (!r.equals("")) {
@@ -99,7 +96,6 @@ public class Test1 {
 		job.setOutputValueClass(Text.class);
 		FileInputFormat.addInputPath(job, new Path(dst));
 		FileOutputFormat.setOutputPath(job, new Path(outputPath));
-		//job.submit();
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 
