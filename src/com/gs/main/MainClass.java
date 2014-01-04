@@ -36,7 +36,7 @@ public class MainClass {
 	private static String dst = "hdfs://gs-pc:9000/home/test/qq.txt";//首页的链接暂存地
     private static String localSrc = "/home/gaoshen/qq.txt";//在master机器的暂存地
     private static int depth = 3;//深度
-    private static int topN = 50;//每页抓取的最大链接数
+    private static int topN = 80;//每页抓取的最大链接数
     private static String outputPath = "hdfs://gs-pc:9000/home/test/output";//最终结果的输出路径
     private static String url = "http://news.qq.com";//需要抓取的地址
     private static String jobName = "DistributeCrawler";//Job的名称
@@ -63,7 +63,7 @@ public class MainClass {
 	
 
 	public static void main(String[] args) throws Exception {
-		try {
+	/*	try {
 			TencentNewsLinkExtractor le = new TencentNewsLinkExtractor(2,100);
 			String data = new String();
 			new HTMLDownloader();
@@ -75,11 +75,11 @@ public class MainClass {
 			FileUtils.writeStringToFile(new File(localSrc), data);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		// 先写到本地，然后再向hdfs写入。//TODO 拖裤子放屁
 		Configuration conf = new Configuration();
 
-		InputStream in = new BufferedInputStream(new FileInputStream(localSrc));
+/*		InputStream in = new BufferedInputStream(new FileInputStream(localSrc));
 		FileSystem fs = FileSystem.get(URI.create(dst), conf);
 		OutputStream out = fs.create(new Path(dst), new Progressable() {
 			public void progress() {
@@ -87,7 +87,7 @@ public class MainClass {
 			}
 		});
 		IOUtils.copyBytes(in, out, 4096, true);// 4096为buffersize
-		// 以上内容为抽取news.qq.com首页的链接，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
+*/		// 以上内容为抽取news.qq.com首页的链接，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
 		Job job = new Job(conf, jobName);
 		job.setJarByClass(MainClass.class);
 		
