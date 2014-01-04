@@ -32,7 +32,7 @@ import com.gs.extractor.URL;
  *	Crawler运行主类，包括Mapper和Main
  *	我们认为url.txt中的连接为0深度，所设置的deepth为页面level。
  */
-public class Test1 {
+public class MainClass {
 	private static String dst = "hdfs://gs-pc:9000/home/test/qq.txt";//首页的链接暂存地
     private static String localSrc = "/home/gaoshen/qq.txt";//在master机器的暂存地
     private static int depth = 3;//深度
@@ -89,7 +89,7 @@ public class Test1 {
 		IOUtils.copyBytes(in, out, 4096, true);// 4096为buffersize
 		// 以上内容为抽取news.qq.com首页的链接，然后生成qq.txt文件，从而实现分布式抓取news.qq.com
 		Job job = new Job(conf, jobName);
-		job.setJarByClass(Test1.class);
+		job.setJarByClass(MainClass.class);
 		
 		job.setMapperClass(CrawlMapper.class);
 		job.setOutputKeyClass(NullWritable.class);
