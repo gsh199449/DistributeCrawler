@@ -1,6 +1,5 @@
 package com.gs.test;
 
-import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;

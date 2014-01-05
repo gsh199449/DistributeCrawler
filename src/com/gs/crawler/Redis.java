@@ -12,7 +12,7 @@ public class Redis {
 
 	private Redis() {
 		try {
-			jj = new Jedis("localhost");
+			jj = new Jedis("localhost",6379);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}

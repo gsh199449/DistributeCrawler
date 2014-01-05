@@ -99,8 +99,9 @@ public class PagePOJO {
 	 * @return
 	 */
 	public String toJson() {
-		//Gson gson = new Gson();
-		return "{\"url\":\""+this.url+"\",\"id\":"+this.id+",\"title\":\""+this.title+"\",\"content\":\""+this.content+"\"}";
+		Gson gson = new Gson();
+		return gson.toJson(this);
+		//return "{\"url\":\""+this.url+"\",\"id\":"+this.id+",\"title\":\""+this.title+"\",\"content\":\""+this.content+"\"}";
 	}
 
 	/* (non-Javadoc)
